@@ -1392,13 +1392,12 @@ float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript
         setZProbingActive(true);
 
         accelerometer_status(); //Clear Interrupt.
-        accelerometer_status(); //Clear Interrupt.
         Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
-        for(int i=0;i<10;i++)
+        for(int i=0;i<10000;i++)
         {
           if( ! Printer::isZProbeHit() ) break;
-          Com::printFLN(PSTR("delay 100ms."));
-          delay(100);
+          //Com::printFLN(PSTR("delay 1ms."));
+          delay(1);
         }
         Com::printFLN(PSTR("zprobing..."));
         PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), true, true);

@@ -51,7 +51,7 @@
 
 
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "072716" // in date format mmddyy
+#define FIRMWARE_DATE "081116" // in date format mmddyy
 
 #if PRINTER == 3
 #define FAN_BOARD_PIN 6  // ERIS Case Fan pin
@@ -618,7 +618,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_Z_PROBE 1
 #define Z_PROBE_SENSITIVITY  25 // 0-126 7 bit value  
 #define Z_PROBE_BED_DISTANCE 20
-#define Z_PROBE_PIN 16
+#define Z_PROBE_PIN 19  // RX1 (INT2) on Serial Extension header X39 (pin 5)
 #define Z_PROBE_PULLUP 1
 #define Z_PROBE_ON_HIGH 0
 #define Z_PROBE_X_OFFSET 0
