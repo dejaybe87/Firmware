@@ -608,7 +608,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -.2
+#define Z_PROBE_HEIGHT 0.5
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
 //#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
@@ -628,7 +628,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -.2
+#define Z_PROBE_HEIGHT 0.5
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
 //#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
@@ -648,7 +648,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -.2
+#define Z_PROBE_HEIGHT 0.5
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
 //#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
@@ -668,7 +668,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_XY_SPEED 50
 #define Z_PROBE_SWITCHING_DISTANCE 10
 #define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_HEIGHT -.2
+#define Z_PROBE_HEIGHT 0.5
 #define Z_PROBE_START_SCRIPT "G28/nG1Z25/n"
 //#define Z_PROBE_START_SCRIPT "M117 Probe Started/n"
 #define Z_PROBE_FINISHED_SCRIPT ""
