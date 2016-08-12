@@ -748,7 +748,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define UI_PRINTER_NAME "ORION Delta"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #elif PRINTER == 2
-#define UI_PRINTER_NAME "Rostock Max"
+#define UI_PRINTER_NAME "Rostock Maximus"
 #define UI_PRINTER_COMPANY "SeeMeCNC"
 #elif PRINTER == 3
 #define UI_PRINTER_NAME "ERIS Delta"
