@@ -121,7 +121,7 @@
 #define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 #define EXT0_STEPS_PER_MM 92.4
-#define EXT0_TEMPSENSOR_TYPE 97
+#define EXT0_TEMPSENSOR_TYPE 8
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -144,12 +144,12 @@
 #define EXT0_PID_D 53.41
 #define EXT0_PID_MAX 175
 #elif PRINTER == 2  // Rostock MAX
-#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
-#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
-#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
-#define EXT0_PID_I 0.73
-#define EXT0_PID_D 53.41
-#define EXT0_PID_MAX 175
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 205
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 60
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 23.43
+#define EXT0_PID_I 4.17
+#define EXT0_PID_D 33.94
+#define EXT0_PID_MAX 255
 #elif PRINTER == 3  // ERIS Delta
 #define EXT0_PID_INTEGRAL_DRIVE_MAX 200
 #define EXT0_PID_INTEGRAL_DRIVE_MIN 120
@@ -267,9 +267,9 @@
 
 #elif PRINTER == 2  // Rostock MAX w/PEEK hotend
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
-#define MAXTEMP 245            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
-#define MIN_DEFECT_TEMPERATURE 18  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
-#define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that wthe printer will throw errors about defective thermistors
+#define MAXTEMP 295            //  this is the max allowable temp the hotend can be set at, any higher will trigger safety's
+#define MIN_DEFECT_TEMPERATURE (-30)  // this is the min temp that will allow the hotend to start heating.  Below this it will show as defective to help identify bad thermistors
+#define MAX_DEFECT_TEMPERATURE 300 // this is the max temp that the printer will throw errors about defective thermistors
 
 #elif PRINTER == 3  // ERIS Delta w/HE280 hotend BUT limited in temp due to cold end cooling
 #define MIN_EXTRUDER_TEMP 150  //  this is the minimum temperature that will allow the extruder to drive filament, lower and it will ignore extruder commands
