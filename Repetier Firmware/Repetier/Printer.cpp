@@ -1392,7 +1392,6 @@ float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript
         setZProbingActive(true);
 
         accelerometer_status(); //Clear Interrupt.
-        accelerometer_status(); //Clear Interrupt.
         Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
         for(int i=0;i<10;i++)
         {
@@ -1401,7 +1400,20 @@ float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript
           delay(100);
         }
         Com::printFLN(PSTR("zprobing..."));
-        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), true, true);
+        // Start ZProbing after motion has stabilized:
+        setZProbingActive(false);
+        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), false, true);
+        int retry_delay = 2;
+        do {
+            accelerometer_status(); //Clear Interrupt.
+            delay(100);
+            retry_delay--;
+        }
+        while (retry_delay > 0 && isZProbeHit());
+        accelerometer_status(); //Clear Interrupt.
+        setZProbingActive(true);
+        Command::waitUntilEndOfAllMoves();
+
         Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
         if(stepsRemainingAtZHit < 0)
         {

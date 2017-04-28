@@ -7,12 +7,13 @@ Rostock MAX v3   = 5
 Hacker H2        = 6
 */
 // ### Define your Printer Model here! ###
-#define PRINTER 5
+#define PRINTER 2
 
+// e3Dv6 w/analog accel probe = -1
 // SeeMeCNC Bowden w/PEEK barrel = 1
 // HE240 on ERIS w/accel probe   = 2
 // HE280 w/accel probe           = 3
-#define HOTEND 3
+#define HOTEND -1
 
 // ### Define your motherboard here! ###
 // 301 = RAMBo    302 = MINI RAMBo
@@ -42,7 +43,7 @@ Hacker H2        = 6
 // ############ FW version info and build date for LCD and M115 string! #######################
 // ############################################################################################
 #define REPETIER_VERSION "0.92.2"
-#define FIRMWARE_DATE "20170414" // in date format yyyymmdd
+#define FIRMWARE_DATE "20170427" // in date format yyyymmdd
 
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
@@ -119,6 +120,21 @@ Hacker H2        = 6
 #define EXT1_PID_I 0.73
 #define EXT1_PID_D 53.41
 #define EXT1_PID_MAX 255
+#if HOTEND == -1
+#define MAXTEMP 295
+#define UI_SET_MAX_EXTRUDER_TEMP 285
+#define EXT0_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT0_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT0_PID_PGAIN_OR_DEAD_TIME 14.50
+#define EXT0_PID_I 0.73
+#define EXT0_PID_D 53.41
+#define EXT0_PID_MAX 235
+#define EXT1_PID_INTEGRAL_DRIVE_MAX 180
+#define EXT1_PID_INTEGRAL_DRIVE_MIN 80
+#define EXT1_PID_PGAIN_OR_DEAD_TIME 23.43
+#define EXT1_PID_I 4.17
+#define EXT1_PID_D 33.94
+#define EXT1_PID_MAX 255
 #endif
 // using PWM not PDM
 #define PDM_FOR_EXTRUDER 0
@@ -134,7 +150,7 @@ Hacker H2        = 6
 #define EXT0_X_OFFSET 0
 #define EXT0_Y_OFFSET 0
 #define EXT0_STEPS_PER_MM 92.4
-#define EXT0_TEMPSENSOR_TYPE 97 //97
+#define EXT0_TEMPSENSOR_TYPE 8 //97
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -340,7 +356,7 @@ Hacker H2        = 6
 #define MAX_TRAVEL_ACCELERATION_UNITS_PER_SQ_SECOND_Z 3000
 #define MAX_JERK 32
 #define MAX_ZJERK 32
-#if HOTEND == 3
+#if HOTEND == 3 || HOTEND == -1
 #define FEATURE_Z_PROBE 1
 #else
 #define FEATURE_Z_PROBE 0
@@ -370,7 +386,7 @@ Hacker H2        = 6
 #define SDCARDDETECT 81
 #define SDCARDDETECTINVERTED 0
 #define FEATURE_CONTROLLER 13
-#define UI_PRINTER_NAME "RostockMAXv2"
+#define UI_PRINTER_NAME "RostockMAXv2[TAP]"
 
 
 #elif PRINTER == 3  // ERIS Delta
@@ -781,7 +797,11 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 */
 // 301 = RAMBO    302 = MINI_RAMBO
 #if MOTHERBOARD == 301
+#if HOTEND == -1
+#define Z_PROBE_PIN 19  // RX1 (INT2) on Serial Extension header X39 (pin 5)
+#else
 #define Z_PROBE_PIN 4
+#endif
 #elif MOTHERBOARD == 302
 #define Z_PROBE_PIN 16
 #endif

@@ -1,6 +1,6 @@
 #ifndef PINS_H
 #define PINS_H
-
+#include "Configuration.h"
 /*
 The board assignment defines the capabilities of the motherboard and the used pins.
 Each board definition follows the following scheme:

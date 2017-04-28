@@ -639,7 +639,11 @@ public:
     static inline bool isZProbeHit()
     {
 #if FEATURE_Z_PROBE
-        return (Z_PROBE_ON_HIGH ? READ(Z_PROBE_PIN) : !READ(Z_PROBE_PIN));
+#if Z_PROBE_ON_HIGH == 1
+        return tap_flag || READ(Z_PROBE_PIN);
+#else
+        return tap_flag || !READ(Z_PROBE_PIN);
+#endif
 #else
         return false;
 #endif

@@ -2128,10 +2128,11 @@ void Commands::processMCode(GCode *com)
         accelerometer_init();
         break;
     case 261: // M261
-        Com::printFLN( PSTR("INT PIN: "), digitalRead(Z_PROBE_PIN) );
+        Com::printFLN( PSTR("INT PIN: "), Printer::isZProbeHit() );
         accelerometer_status();
         break;
     case 262: // M262
+        // Does nothing.
         break;
 
 #if FEATURE_DITTO_PRINTING
