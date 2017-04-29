@@ -640,7 +640,11 @@ public:
     {
 #if FEATURE_Z_PROBE
 	      extern volatile bool tap_flag;
-        return tap_flag;
+#if Z_PROBE_ON_HIGH == 1
+        return tap_flag || READ(Z_PROBE_PIN);
+#else
+        return tap_flag || !READ(Z_PROBE_PIN);
+#endif
 #else
         return false;
 #endif

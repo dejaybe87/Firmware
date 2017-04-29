@@ -1921,7 +1921,7 @@ void Commands::processMCode(GCode *com)
         accelerometer_init();
         break;
     case 261: // M261
-        Com::printFLN( PSTR("INT PIN: "), tap_flag );
+        Com::printFLN( PSTR("INT PIN: "), Printer::isZProbeHit() );
         accelerometer_status();
         break;
     case 262: // M262

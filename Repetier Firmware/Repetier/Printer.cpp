@@ -1389,26 +1389,35 @@ float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript
         int32_t offy = axisStepsPerMM[Y_AXIS] * EEPROM::zProbeYOffset();
         //PrintLine::moveRelativeDistanceInSteps(-offx,-offy,0,0,EEPROM::zProbeXYSpeed(),true,true);
         waitForZProbeStart();
-        setZProbingActive(true);
 
         accelerometer_status(); //Clear Interrupt.
         Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
-        for(int i=0;i<10000;i++)
+        for(int i=0;i<100;i++)
         {
           if( ! Printer::isZProbeHit() ) break;
           //Com::printFLN(PSTR("delay 1ms."));
-          delay(1);
+          delay(100);
         }
         Com::printFLN(PSTR("zprobing..."));
-        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), true, true);
-        Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
-        
-        if(stepsRemainingAtZHit < 0)
+        setZProbingActive(false);
+        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), false, true);
+        int retry_delay = 2;
+        do {
+          accelerometer_status(); //Clear Interrupt.
+          delay(100);
+          retry_delay--;
+        }
+        while (retry_delay > 0 && isZProbeHit());
+        accelerometer_status(); //Clear Interrupt.
+        bool failed = (retry_delay == 0 && isZProbeHit());
+        setZProbingActive(true);
+        Commands::waitUntilEndOfAllMoves();
+        setZProbingActive(false);
+        if(failed || stepsRemainingAtZHit < 0)
         {
             Com::printErrorFLN(Com::tZProbeFailed);
             return -1;
         }
-        setZProbingActive(false);
 #if NONLINEAR_SYSTEM
         stepsRemainingAtZHit = realDeltaPositionSteps[C_TOWER] - currentDeltaPositionSteps[C_TOWER]; // nonlinear moves may split z so stepsRemainingAtZHit is only what is left from last segment not total move. This corrects the problem.
 #endif
