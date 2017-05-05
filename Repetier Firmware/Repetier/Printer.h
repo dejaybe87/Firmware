@@ -639,12 +639,8 @@ public:
     static inline bool isZProbeHit()
     {
 #if FEATURE_Z_PROBE
-	      extern volatile bool tap_flag;
-#if Z_PROBE_ON_HIGH == 1
-        return tap_flag || READ(Z_PROBE_PIN);
-#else
-        return tap_flag || !READ(Z_PROBE_PIN);
-#endif
+      extern bool tap_hit(bool checkEnabled);
+      return tap_hit(true);
 #else
         return false;
 #endif

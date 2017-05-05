@@ -25,19 +25,32 @@ uint8_t mpu_threshold = 50;
 
 #include <Wire.h>
 volatile bool tap_flag = false;
+volatile bool tap_enabled = false;
 
 void tapISR(void) {
   // Set the tap flag:
   tap_flag = true;
 }
 
-void accelerometer_status()
+void tap_clear()
 {
   // Clears the TAP flag:
   tap_flag = false;
 }
 
-void accelerometer_init()
+void tap_enable(bool enable) {
+  tap_enabled = enable;
+}
+
+bool tap_hit(bool check_enabled) {
+#if Z_PROBE_ON_HIGH == 1
+  return (!check_enabled || tap_enabled) && (tap_flag || READ(Z_PROBE_PIN));
+#else
+  return (!check_enabled || tap_enabled) && (tap_flag || !READ(Z_PROBE_PIN));
+#endif
+}
+
+void tap_init()
 {
   // Initialize the TAP interrupt and data structure:
   Com::printFLN(PSTR("Project TAP accelerometer initializing..."));
@@ -46,7 +59,8 @@ void accelerometer_init()
 #else
   attachInterrupt(digitalPinToInterrupt(Z_PROBE_PIN), tapISR, FALLING);
 #endif
-  accelerometer_status();
+  tap_clear();
+  tap_enable(true);
 }
 
 const int sensitive_pins[] PROGMEM = SENSITIVE_PINS; // Sensitive pin list for M42
@@ -1918,11 +1932,11 @@ void Commands::processMCode(GCode *com)
 #endif
 
     case 260: // M260
-        accelerometer_init();
+        tap_init();
         break;
     case 261: // M261
         Com::printFLN( PSTR("INT PIN: "), Printer::isZProbeHit() );
-        accelerometer_status();
+        tap_clear();
         break;
     case 262: // M262
 	// Does nothing.

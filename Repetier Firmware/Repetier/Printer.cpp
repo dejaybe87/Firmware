@@ -1354,7 +1354,8 @@ float Printer::runZMaxProbe()
 }
 #endif
 
-void accelerometer_status();
+void tap_clear();
+void tap_enable(bool);
 #if FEATURE_Z_PROBE
 float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript)
 {
@@ -1390,27 +1391,29 @@ float Printer::runZProbe(bool first,bool last,uint8_t repeat,bool runStartScript
         //PrintLine::moveRelativeDistanceInSteps(-offx,-offy,0,0,EEPROM::zProbeXYSpeed(),true,true);
         waitForZProbeStart();
 
-        accelerometer_status(); //Clear Interrupt.
+        tap_clear(); //Clear Interrupt.
         Com::printF(Com::tZProbeState); Com::print(Printer::isZProbeHit() ? 'H' : 'L'); Com::println();
         for(int i=0;i<100;i++)
         {
           if( ! Printer::isZProbeHit() ) break;
           //Com::printFLN(PSTR("delay 1ms."));
+          tap_clear();
           delay(100);
         }
         Com::printFLN(PSTR("zprobing..."));
-        setZProbingActive(false);
-        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), false, true);
-        int retry_delay = 2;
-        do {
-          accelerometer_status(); //Clear Interrupt.
-          delay(100);
-          retry_delay--;
-        }
-        while (retry_delay > 0 && isZProbeHit());
-        accelerometer_status(); //Clear Interrupt.
-        bool failed = (retry_delay == 0 && isZProbeHit());
+        tap_enable(false);
         setZProbingActive(true);
+        PrintLine::moveRelativeDistanceInSteps(0, 0, -probeDepth, 0, EEPROM::zProbeSpeed(), false, true);
+        int probe_start_retries = 4;
+        do {
+          tap_clear(); //Clear Interrupt.
+          delay(50);
+          probe_start_retries--;
+        }
+        while (probe_start_retries > 0 && isZProbeHit());
+        tap_clear(); //Clear Interrupt.
+        bool failed = (probe_start_retries == 0 && isZProbeHit());
+        tap_enable(true);
         Commands::waitUntilEndOfAllMoves();
         setZProbingActive(false);
         if(failed || stepsRemainingAtZHit < 0)

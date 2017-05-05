@@ -148,12 +148,12 @@ Custom M Codes
 //#include <LiquidCrystal.h> // Uncomment this if you are using liquid crystal library
 #endif
 
-void accelerometer_init();
+void tap_init();
 
 void setup()
 {
     Printer::setup();
-    accelerometer_init();
+    tap_init();
 }
 
 void loop()
